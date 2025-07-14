@@ -33,7 +33,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     make \
     php8.1-mysql php8.1-zip php8.1-xml php8.1-mbstring php8.1-curl php8.1-pdo php8.1-tokenizer php8.1-cli php8.1-imap php8.1-intl php8.1-gd php8.1-xdebug php8.1-soap php8.1-apcu php8.1-redis php8.1-bcmath \
     apache2 libapache2-mod-php8.1 \
-    nodejs \
     supervisor \
     --no-install-recommends && \
     apt-get clean -y && \
@@ -53,6 +52,9 @@ RUN locale-gen en_US.UTF-8
 RUN echo "date.timezone=Europe/Paris" > /etc/php/8.1/cli/conf.d/date_timezone.ini
 RUN echo "memory_limit=1G" >> /etc/php/8.1/apache2/php.ini
 RUN service mariadb start && mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY ''; FLUSH PRIVILEGES;"
+
+# Install nodejs from nodesource
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && apt install -y nodejs
 
 # Goto temporary directory.
 WORKDIR /tmp
